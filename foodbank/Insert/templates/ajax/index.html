@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+  <title>Google Maps Multiple Markers</title> 
+  <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   
+<style type="text/css">
+
+#map{
+  float: left;
+  width: 1000px; 
+  height: 700px;
+}
+#message{
+  float: right;
+  width: 400px;
+}
+#list li{
+  padding-bottom: 40px;
+
+}
+</style>
+</head> 
+<body>
+  <div id="map"></div>
+
+  <script type="text/javascript">
+
+  var locations;
+    $(document).ready(function(){
+ 
+          $.getJSON("http://127.0.0.1:8000/foodbank/json", function(result){
+            locations = result;
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                      zoom: 13,
+                      center: new google.maps.LatLng(locations[0][1], locations[0][2]),
+                      mapTypeId: google.maps.MapTypeId.ROADMAP
+                    });
+
+            var infowindow = new google.maps.InfoWindow();
+
+            var marker, i;
+
+            for (i = 0; i < locations.length; i++) {  
+              marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                map: map
+              });
+
+              google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                  infowindow.setContent(locations[i][0]);
+                  infowindow.open(map, marker);
+
+                  var loc = locations[i][0]
+
+                  $.ajax({
+                      url: 'http://127.0.0.1:8000/foodbank/place_post',
+                      type: 'GET',
+                      data: { name: locations[i][0]} ,
+                      contentType: 'application/json; charset=utf-8',
+                      success: function (response) {
+                          
+                          var messageDiv = document.getElementById('message')
+                          
+                          var rmelem1 = document.getElementById('title')
+                          var rmelem2 = document.getElementById('list')
+                          
+                          if (rmelem1) {
+                            messageDiv.removeChild(rmelem1)
+                          };
+                          if (rmelem2) {
+                            messageDiv.removeChild(rmelem2)
+                          };
+
+                          console.log(response)
+                          objects = JSON.parse(response)
+                          
+                          
+                          
+                          var heading = document.createElement('h1')
+                          heading.setAttribute("id","title")
+                          heading.appendChild(document.createTextNode(loc))
+                            console.log(loc)
+                          messageDiv.appendChild(heading)
+
+                          
+                          
+
+                          var orderedList = document.createElement('ol')
+                          orderedList.setAttribute("id", "list")
+
+                          for (var i = 0; i < objects.length; i++) {
+                            var item = document.createElement('li')
+                            item.appendChild(document.createTextNode(objects[i]))
+                            orderedList.appendChild(item)
+                          };
+                          messageDiv.appendChild(orderedList)
+                      },
+                      error: function () {
+                          //your error code
+                      }
+                  }); 
+                }
+
+              
+
+              })(marker, i));
+            }
+           });
+ 
+          });
+    
+
+    
+  </script>
+
+
+
+
+<div id="message">
+</div>
+</body>
+</html>
+

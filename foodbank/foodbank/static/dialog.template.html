@@ -1,0 +1,30 @@
+<md-dialog ng-app="myApp" ng-controller="AppCtrl" style="background-color: #2d2d28">
+  <md-content style="background-color: #2d2d28">
+    <md-subheader class="flush">Settings</md-subheader>
+    <md-divider class="flush"></md-divider>
+
+    <div class="checkbox">
+      <h3>Search Options:</h3>
+      <md-checkbox ng-model="checkbox.restaurant" ng-change="onOtherChange()">
+        Search for restaurant
+      </md-checkbox>
+      <md-checkbox ng-model="checkbox.food" ng-change="onOtherChange()">
+        Search for food
+      </md-checkbox>
+      <md-checkbox ng-model="checkbox.query" ng-change="onQueryChange()">
+        Do a query
+      </md-checkbox>
+    </div>
+
+    <div class="star">
+      <h3>Minimum rating: [[ slider.rating ]]</h3>
+      <md-slider flex md-discrete ng-model="slider.rating" step="1" min="1" max="5" aria-label="rating">
+      </md-slider>
+    </div>
+
+    <div class="distance">
+      <h3>Maximum Distance: [[ slider.distance ]] (km)</h3>
+      <md-slider flex min="1" max="100" ng-model="slider.distance" aria-label="distance"></md-slider>
+    </div>
+  </md-content>
+</md-dialog>

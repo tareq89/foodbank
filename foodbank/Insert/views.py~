@@ -1,0 +1,142 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template import Context, loader, RequestContext
+from Insert.models import Post, Place
+from Insert.populateDB import *
+from django.template import loader, Context
+from django.shortcuts import render_to_response, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django import forms
+import json
+from django.http import HttpResponse
+from django.core import serializers
+from Insert.hortal import *
+
+
+# Create your views here.
+
+def insert(request):
+	# latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
+	# template = loader.get_template('Views/index.html')
+	# context = Context({
+	# 	'latest_poll_list': latest_poll_list,
+	# 	})
+	
+	import json
+	import os
+
+	filename = os.path.realpath("Insert/json")
+	file = open(filename, "r")
+	text = file.read()
+
+
+	# data = ReadFile("Insert/json")	
+	
+	# s = '{ "name": "Mobile", "namespace": null, "id": "2915120374" }'
+
+	Data = json.loads(text)
+
+	print Data[0]
+	
+
+
+	# for data in Data:		
+	# 	AssignPost(data) 
+
+	# AssignPost(Data[2]) 
+
+	# print DjangoJson(post)
+	# post.save()
+	return HttpResponse("Hello django !\n" + filename)
+
+def posts(request):
+	posts = Post.objects.all().order_by('-created_time')
+	# template = loader.get_template('posts/index.html')
+	# context = Context({'posts': posts})
+	context = RequestContext(request, {
+			'posts': posts
+		})
+	# response = template.render(context)
+	# return HttpResponse(response)
+ 	return render_to_response('posts/index.html', context)
+
+class SearchPost(forms.Form):
+	a = forms.CharField(label='Search topic' ,max_length=100)
+		
+
+@csrf_exempt
+def query(request):	
+	val = ""
+	if request.method == 'POST':
+		print "true"
+		form = SearchPost(request.POST)
+		val = request.POST.get('name', '')
+		print val		
+		
+		# SELECT "message" FROM "public"."Insert_post" WHERE "message" LIKE '%burger%'
+		topic = '%'+val+'%'
+		posts = Post.objects.raw('SELECT * FROM "public"."Insert_post" WHERE "message" LIKE %s', [topic])
+		context = RequestContext(request, {
+				'posts': posts,
+				'query': val
+			})
+	 	return render_to_response('query/index.html', context)
+	else:		
+		context = RequestContext(request, {
+				'query': val
+			})
+		print "This is the val : " + val
+	 	return render_to_response('query/index.html', context)
+ 	# return render(request, 'query/index.html', {'query': val})
+
+
+from django.db import connection
+def json(request):
+	cursor = connection.cursor()	
+	cursor.execute('''SELECT 	 
+								"public"."Insert_place"."Name",
+								"public"."Insert_place"."Latitude",
+								"public"."Insert_place"."Longitude" 			
+										
+
+								FROM 	"public"."Insert_post" INNER JOIN "public"."Insert_place" 
+								ON "public"."Insert_post"."id" = "public"."Insert_place"."Post_id"''')
+	data = cursor.fetchall()
+	# print data
+	data = jsonDump(data)
+	# data = serializers.serialize("json", data)
+	# data = '''[
+ #      ["Cox's Bazar", -33.890542, 151.274856, 4],
+ #      ["Potenga", -33.923036, 151.259052, 5],
+ #      ["Inani Beach", -34.028249, 151.157507, 3],
+ #      ["Teknuf", -33.80010128657071, 151.28747820854187, 2],
+ #      ["Halishohor Beach", -33.950198, 151.259302, 1]
+ #    ]''';
+ 	# data = '{"name": "tareq"}'
+
+	return HttpResponse(data, content_type='application/json')
+
+def ajax(request):
+	return render_to_response('ajax/index.html')
+
+def place_post(request):
+	print "this is from place_post"
+	val = ""
+	if request.method == 'GET':
+		print "true"
+		val = request.GET.get('name', '')
+		print val	
+	cursor = connection.cursor()	
+	cursor.execute('''SELECT 	 
+								"public"."Insert_post"."message"													
+								FROM 	"public"."Insert_post" INNER JOIN "public"."Insert_place" 
+								ON "public"."Insert_post"."id" = "public"."Insert_place"."Post_id"
+								WHERE "public"."Insert_place"."Name" = %s''', [val])
+	data = cursor.fetchall()
+	# print data
+	data = jsonDump(data)
+	return HttpResponse(data)
+
+def hortal(request):
+
+	return HttpResponse(Download())

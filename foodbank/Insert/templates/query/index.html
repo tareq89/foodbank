@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<form action="Insert/query/" method="post">		
+		<input type="text" name="name">
+		<input type="submit" name="Submit"/>
+	</form>
+
+	<div>
+		<h1>You just Searched for : {{ query }}</h1>
+	</div>
+	<div>
+		<ol>
+			{% for post in posts %}
+				<li>{{ post.message }}</li>
+				<br><br><br>
+			{% endfor %}
+		</ol>
+	</div>
+ 
+{% endblock content %}
+
+	

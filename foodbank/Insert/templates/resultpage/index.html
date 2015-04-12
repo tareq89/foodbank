@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>Search Result</title>
+</head>
+<body>
+
+{% block content %}
+<div>
+	<h1>{{ place_details.Name }}</h1>
+	<p>{{ place_details.Street }}</p>
+</div>
+<div>
+	<ol>
+		{% for r in place_post %}
+			<li>
+				<!-- <h1> {{ r.Name }} </h1> -->
+				<p>{{ r.message }}</p>
+			</li>
+			<br><br><br>
+		{% endfor %}
+	</ol>
+</div>
+<div>
+	<ol>
+		{% for r in place_list %}
+			<li>
+				<div>
+					<h1>{{ r.Name }}</h1>
+					<p>{{ r.Street }}</p>
+				</div>
+			</li>
+		{% endfor %}
+	</ol>
+</div>
+{% endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+body, div, h1, h2, h3, h4, h5, h6 {
+  color: #ededec;
+  font-family: "interface", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 4.688rem;
+}
+
+h2.title {
+	margin-top: 35px;
+	font-size: 1.7rem;
+	font-family: "Nunito", sans-serif;
+}
+
+/*setting as many bgcolors as I can to #2d2d28*/
+.md-content.flush, .md-subheader.flush, .md-divider.flush, .md-toolbar.flush {
+	background-color: #2d2d28;
+}
+
+/*to make the whole page of #2d2d28 color*/
+md-content {
+  height: 100%;
+}
+
+/*for settinngs button and "restaurant"*/
+span {
+  color: #eb4137;
+  font-weight: bold;
+}
+
+/*for the only line of the page :p*/
+.search-title {
+  margin: 10px 400px 0px 40px;
+}
+
+.search-title h1 {
+  line-height: 1em;
+}
+
+/*input field ofcourse*/
+.search-field {
+  margin: 60px 40px;
+}
+
+input[type="text"].searchinput{
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  border: medium none;
+  box-shadow: none;
+  color: #ededec;
+  font-size: 4.688em;
+  font-weight: bold;
+  height: auto;
+  width: 100%;
+}
+
+/*dialog manipulation*/
+md-dialog {
+  height: 500px;
+  width: 700px;
+}
+
+h2.md-subheader {
+  margin-top: -24px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.checkbox, .star, .distance {
+	padding: 5px 20px;
+}
+
+md-checkbox .md-label { border: none; }
+md-checkbox .md-label span {
+  font-weight: normal;
+  color: #ededec;
+}
+
+.s70 {
+	margin-top: 30px;
+	margin-left: 50px;
+  margin-right: 0px;
+	height: 70px;
+	width: 70px;
+}
+
+svg path { fill: #eb4137;}
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+::-webkit-scrollbar-track-piece {
+    background: #2d2d28;
+}
+::-webkit-scrollbar-thumb {
+    background: #4f4f48;
+    border-radius: 2px;
+}
+::-webkit-scrollbar-corner       {
+    background: #999;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: #888;
+}
+
+
+h3#keyword { font-size: 50px;}
+
+.results { padding-left: 15px; }
+.result { height: 100px; width: 90vh; }
+.result h3 { margin-left: -280px;}
+.result h3>span { padding-left: 10px;}
+.result p { margin-top: -10px; margin-left: -8px; }
+
+.info { padding-left: 40px; }
+
+ 

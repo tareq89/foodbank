@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <title>Restaurant Finder</title>
+    <meta charset="utf-8">
+
+    <link href="http://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.0/angular-material.min.css">
+    <link rel="stylesheet" href="{% static "css/app.css" %}"/>
+    <link rel="shortcut icon" href="{% static "assets/favicon.png" %}">
+  </head>
+
+  <body ng-app="myApp" layout="column" ng-controller="AppCtrl" data-ng-init="init()">
+    <md-content style="background-color: #2d2d28">
+      <md-toolbar class="md-tall" layout="row" style="background-color: #2d2d28">
+
+        <md-button flex="25" href="/foodbank/" layout="row">
+          <md-icon md-svg-src="{% static "assets/logo.svg" %}" class="s70"></md-icon>
+          <h2 class="title"><span>Restaurant<br>Finder</span></h2>
+        </md-button>
+
+        <div flex="60">
+        </div>
+
+        <md-button class="nunito" flex="15" ng-click="showAdvanced($event)"><span>Settings</span></md-button>
+
+      </md-toolbar>
+
+      <md-divider class="flush"></md-divider>
+
+      <div class="search-title">
+        <h1>Search for great <span>restaurants</span> around you — in seconds</h1>
+      </div>
+
+      <div class="search-field">
+        <form action="firstpageRequest/" method="GET">
+          <input type="text" name="query" class="searchinput" placeholder="Enter keywords to search..." autocomplete="off">
+
+          <!-- I'm a duck, sitting right here but no-one sees me, hell yeah!!!!!!!!! -->
+          <input type="text" name="cbox" value="[[ checkbox ]]" ng-hide="true">
+          <input type="text" name="rating" value="[[ slider.rating ]]" ng-hide="true">
+          <input type="text" name="distance" value="[[ slider.distance ]]" ng-hide="true">
+          <input type="text" name="location" value="[[ pos ]]" ng-hide="true">
+
+          <!-- A submit button to abyss -_- -->
+          <input type="submit" ng-click="refresh()" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+        </form>
+      </div>
+      <div id="map" ng-hide="true"></div>
+    </md-content>
+    
+    <!-- Angular Material Dependencies -->
+    <script src="//cdn.jsdelivr.net/hammerjs/2.0.4/hammer.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-aria.min.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 0.8 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.0/angular-material.min.js"></script>
+    <script src="{% static "js/app.js" %}"></script>
+  </body>
+</html>

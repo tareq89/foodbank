@@ -1,0 +1,138 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <title>Restaurant Finder</title>
+    <script src="http://maps.google.com/maps/api/js?sensor=false" 
+          type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <meta charset="utf-8">
+
+    <link href="http://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.0/angular-material.min.css">
+    <link rel="stylesheet" href="{% static "css/app.css" %}"/>
+    <link rel="shortcut icon" href="{% static "assets/favicon.png" %}">
+
+
+<style type="text/css">
+
+#map{
+  float: left;
+  width: 800px; 
+  height: 200px;
+}
+</style>
+  </head>
+{% block content %}
+  <body ng-app="myApp" layout="column" ng-controller="AppCtrl">
+    <md-content style="background-color: #2d2d28">
+      <md-toolbar class="md-tall" layout="row" style="background-color: #2d2d28">
+
+        <md-button flex="25" href="/foodbank/" layout="row">
+          <md-icon md-svg-src="{% static "assets/logo.svg" %}" class="s70"></md-icon>
+          <h2 class="title"><span>Restaurant<br>Finder</span></h2>
+        </md-button>
+
+        <div flex="60">
+        </div>
+
+        <md-button class="nunito" flex="15" ng-disabled="true" ng-click="showAdvanced($event)"><span>Settings</span></md-button>
+
+      </md-toolbar>
+
+      <md-divider class="flush"></md-divider>
+      <h3 id="keyword">Search for: {{ query }}</h3>
+
+      <!-- Content starts here -->
+      <div class="container" layout="row">
+        <!-- Button Group -->
+      <div class="results" flex="50" style="overflow-y: scroll; height:70vh">
+         {% for r in uniq_place_list %}
+          <!-- A single button, repeat it as many time as you wish -->
+          <md-button class="result md-primary"
+                     ng-click="selectedIndex = {{ r.index }}; dest.lat = {{ r.Latitude }}; dest.lon = {{ r.Longitude }}; reload({{ r.Latitude }},{{ r.Longitude }});"
+                     layout="column"
+                     style="font-weight: normal; text-transform: none; color: white;">
+            <h3 flex="50" style="float:left">
+              <!-- Shawarma House -->
+              {{ r.Name }}
+              <span>
+
+                {% for rating in r.rating %}
+                   ★ 
+                {% endfor %}
+              </span>
+            </h3>
+            <br>
+            <p flex="50">
+              <img src="{% static "assets/map-marker.png" %}" alt="" style="width:15px;height:15x;floag:left">
+              <!-- Adress: 24/1,Tajmahal Road,(opposite Mohammadpur Shia Masjid), Dhaka -->
+              {{ r.Street}}
+            </p>
+          </md-button>
+          <!-- Single button ends here -->
+          {% endfor %}           
+        </div>
+
+        <!-- Tab Group -->
+         <div class="info" flex="50" style="overflow-y: scroll; height:70vh">
+          <div id="map"></div>
+          <md-tabs md-selected="selectedIndex" md-no-ink md-no-bar>
+            <!-- Single Tab -->
+            {% for r in uniq_place_list %}
+            <md-tab disabled><md-tab-label></md-tab-label>
+              <h3>
+                {{ r.Name }}
+                 <span>
+
+                {% for rating in r.rating %}
+                   ★ 
+                {% endfor %}
+              </span>
+              </h3>
+              <p>
+                <img src="{% static "assets/map-marker.png" %}" alt="" style="width:15px;height:15x;padding-bottom=-20px">
+                {{ r.Street}} <br>
+                fb: <a href="#">fb: https://www.facebook.com/</a> <br>
+                type: restaurant <br>
+                 distance: {{ r.distance }} km <br>
+                [[ dest.lat ]] <br>
+                [[ dest.lon ]] <br>
+              </p>
+
+              <ol>
+                {% for s in r.messageList %}
+                <li>{{ s }}</li>
+                {% endfor %}
+              </ol>
+<!--               <div>
+                <div>
+                  <img src="{% static "assets/map-marker.png" %}" alt="" style="width:15px;height:15x;padding-bottom=-20px">
+                  <p>{{ r.Street}}</p>
+                  <p> type: restaurant </p>
+                  <p> distance: {{ r.distance }} km </p>
+                </div>
+                <div> <a href="#">fb: https://www.facebook.com/</a> </div>
+              </div> -->
+            </md-tab>
+            <!-- Single Tab ends -->              
+            {% endfor %}
+          </md-tabs> 
+          
+        </div>
+      </div>
+    </md-content>
+
+    <!-- Angular Material Dependencies -->
+    <script src="//cdn.jsdelivr.net/hammerjs/2.0.4/hammer.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-aria.min.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 0.8 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.0/angular-material.min.js"></script>
+    <script src="{% static "js/tareq.js" %}"></script>
+  </body>
+{% endblock content %}
+</html>
